@@ -1,7 +1,29 @@
 <?php
-  
-  include_once('../common/base.php'); 
-  
+
+  include_once('../common/base.php');
+
+  function showForm($title = '', $summary = '', $content = '', $image = '') {?>
+    <form id="updateProject" method="POST">
+      <div>
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title" value="<?php echo $title; ?>" required />
+          <br><br>
+        <label for="summary">Summary</label>
+        <textarea rows="5" name="summary" id="summary" required><?php echo $summary; ?></textarea>
+          <br><br>
+        <label for="content">Content</label>
+        <textarea rows="10" name="content" id="formcontent" required><?php echo $content; ?></textarea>
+          <br><br>
+        <label for="image">Image URL</label>
+        <input type="text" name="image" id="image" value="<?php echo $image; ?>" required />
+          <br><br>
+
+        <button type="submit" name="action" value="savePost">Save Post</button>
+        <button type="submit" name="action" value="previewPost">Preview Post</button>
+      </div>
+    </form>
+  <?php }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,26 +36,40 @@
     <title>Admin - Phil Wilkinson</title>
   </head>
   <body>
-    <header style="height:78px;">      
+    <header style="height:78px;">
       <div id="header_name">
         <span id="header_fname"><a href="index.php">admin</a></span>
       </div>
     </header>
-    
+
+    <?php if(isset($_SESSION['loggedin'])) { include "nav.php"; } ?>
+
     <div id="content">
-      
+
       <?php if(isset($_SESSION['loggedin'])) {
         //ADMIN IS LOGGED IN
-        include "nav.php";
-  		  
-        if(isset($_POST['action']) && $_POST['action'] == "createProject") {
-          /* NEW PROJECT CREATED
-           * save to database
-           */
-          
-          $sql = "INSERT INTO projects (title, summary, image, content) VALUES 
+
+        if(isset($_POST['action']) && $_POST['action'] == "previewPost") { ?>
+
+          <div class="previewHeader"><h1>On the homepage:</h1></div>
+          <div class="projectPreview">
+            <div class="previews">
+              <a href="#"><img src="<?php echo '../' . $_POST['image']; ?>" alt="<?php echo $_POST['title']; ?>"></a>
+            </div>
+            <div class="description">
+              <a href="#"><h1><?php echo $_POST['title']; ?></h1></a>
+                <?php echo nl2br($_POST['summary']); ?>
+            </div>
+          </div>
+          <div class="previewHeader"><h1>On the project page:</h1></div>
+
+          <?php showForm($_POST['title'], $_POST['summary'], $_POST['content'], $_POST['image']);
+        }
+        elseif(isset($_POST['action']) && $_POST['action'] == "savePost") {
+
+          $sql = "INSERT INTO projects (title, summary, image, content) VALUES
                   (:title, :summary, :image, :content)";
-        
+
           try {
             $stmt = $db->prepare($sql);
             $stmt->bindParam(':title', $_POST['title'], PDO::PARAM_STR);
@@ -44,46 +80,23 @@
           } catch (PDOException $e) {
     		    echo 'Insert failed: ' . $e->getMessage();
           }
-          
+
           if($stmt->rowCount()==1) {
             echo "Success.";
             ?><meta http-equiv="refresh" content="0;projects.php"><?php
           } else {
             echo "Insert Failed.";
           }
-        } else { ?>
-          
-          
-          <form id="updateProject" method="POST">
-            <div>
-              <input type="hidden" name="id" required />
-              <input type="hidden" name="action" value="createProject" />
-              <label for="title">Title</label>
-              <input type="text" name="title" id="title" required />
-                <br><br>
-              <label for="summary">Summary</label>
-              <textarea rows="5" name="summary" id="summary" required></textarea>
-                <br><br>
-              <label for="content">Content</label>
-              <textarea rows="10" name="content" id="content" required></textarea>
-                <br><br>
-              <label for="image">Image URL</label>
-              <input type="text" name="image" id="image" required />
-                <br><br>
-              
-              <button>Save Project</button>
-              <button>Preview Project</button>
-            </div>
-          </form>
-          
-          <?php
-          
+        } else {
+          showForm();
+
+
         }
-        
-      } else { 
+
+      } else {
         // NO ADMIN LOGGED IN
         echo "You shouldn't be here.";
-  	  
+
       } //end login check ?>
     </div>
   </body>
