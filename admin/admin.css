@@ -1,0 +1,112 @@
+form#login-form {
+  background: #ffffff;
+  text-align: center;
+  padding: 40px;
+  box-shadow: 0px 5px 5px #ccc;
+}
+
+form#login-form label {
+  width: 65px;
+  display: inline-block;
+  text-align: left;
+}
+
+form#updateProject {
+  background: #ffffff;
+  padding: 40px;
+  box-shadow: 0px 5px 5px #ccc;
+  margin-top: 30px;
+}
+
+form#updateProject label {
+  display: block;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+form#updateProject input {
+  width: 744px;
+  padding: 4px;
+  font: inherit;
+  font-size: 18px;
+}
+
+form#updateProject textarea {
+  width: 744px;
+  padding: 4px;
+  font: inherit;
+  font-size: 18px;
+}
+
+form#updateProject button, form.deleteForm button {
+  background: #555;
+  padding: 3px;
+  color: #fff;
+  border: 1px solid #da8403;
+  margin: 2px 2px 0 2px;
+  font: 19px MisoLight, sans-serif
+}
+
+form.deleteForm {
+  float: right;
+}
+
+a.button {
+  background: #555;
+  padding: 3px;
+  color: #fff;
+  border: 1px solid #da8403;
+  margin: 2px 2px 0 2px;
+  float: right;
+}
+
+a.button.delete, form.deleteForm button {
+  background: #f55;
+}
+
+.adminnotice, nav {
+  background: #ffffff;
+  text-align: center;
+  padding: 13px;
+  box-shadow: 0px 5px 5px #ccc;
+}
+
+.adminnotice {
+  margin-bottom: 10px;
+}
+
+nav a {
+  padding: 0 10px;
+  border-left: 1px solid #ccc;
+}
+
+nav a:first-child {
+  border-left: none;
+}
+
+.notice {
+  color: red;
+  font-weight: bold;
+}
+
+.project {
+  margin: 0;  
+  background: white;
+  padding: 6px 15px;
+  box-shadow: 0px 5px 5px #ccc;
+}
+
+@media screen and (max-width: 360px) {
+  form#login-form {
+    text-align: left;
+  }
+  nav a {
+    border-top: 1px solid #ccc;
+    border-left: none;
+    display: block;
+    padding: 4px 0;
+  }
+  nav a:first-child {
+    border-top: none;
+  }
+}
