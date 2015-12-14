@@ -1,7 +1,7 @@
 <?php
-  
-  include_once('../common/base.php'); 
-  
+
+  include_once('../common/base.php');
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,28 +14,29 @@
     <title>Admin - Phil Wilkinson</title>
   </head>
   <body>
-    <header style="height:78px;">      
+    <header style="height:78px;">
       <div id="header_name">
         <span id="header_fname"><a href="index.php">admin</a></span>
       </div>
     </header>
-    
+
+    <?php if(isset($_SESSION['loggedin'])) { include "nav.php"; } ?>
+
     <div id="content">
-      
+
       <?php if(isset($_SESSION['loggedin'])) {
-        //ADMIN IS LOGGED IN 
-        include "nav.php";
-        
-        } elseif(isset($_POST['email']) && isset($_POST['password'])) { 
+        //ADMIN IS LOGGED IN
+
+        } elseif(isset($_POST['email']) && isset($_POST['password'])) {
         //LOGIN SUBMITTED
         $sql = "SELECT email FROM user WHERE email=:email AND password=:pass LIMIT 1";
-        
+
         try {
           $stmt = $db->prepare($sql);
           $stmt->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
           $stmt->bindParam(':pass', $_POST['password'], PDO::PARAM_STR);
           $stmt->execute();
-          
+
           if($stmt->rowCount()==1) {
             $_SESSION['email'] = htmlentities($_POST['email'], ENT_QUOTES);
             $_SESSION['loggedin'] = 1;
@@ -46,11 +47,11 @@
         } catch (PDOException $e) {
   		    echo 'Login failed: ' . $e->getMessage();
         }
-        
-        
-      } else { 
+
+
+      } else {
         // NO ADMIN LOGGED IN ?>
-        
+
       <form id="login-form" method="POST">
         <div>
           <label for="email">Email</label>
@@ -62,9 +63,9 @@
           <input type="submit" name="login-submit" id="login-submit" value="Log In" class="button" />
         </div>
       </form>
-      
+
     </div><!--end content -->
-    
+
     <?php } //end login check ?>
   </body>
 </html>
