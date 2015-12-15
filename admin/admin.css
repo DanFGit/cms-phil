@@ -11,34 +11,34 @@ form#login-form label {
   text-align: left;
 }
 
-form#updateProject {
+form#updateProject, form#updateBio {
   background: #ffffff;
   padding: 40px;
   box-shadow: 0px 5px 5px #ccc;
   margin-top: 30px;
 }
 
-form#updateProject label {
+form#updateProject label, form#updateBio label {
   display: block;
   font-size: 1.4em;
   font-weight: bold;
 }
 
-form#updateProject input {
+form#updateProject input, form#updateBio input {
   width: 744px;
   padding: 4px;
   font: inherit;
   font-size: 18px;
 }
 
-form#updateProject textarea {
+form#updateProject textarea, form#updateBio textarea {
   width: 744px;
   padding: 4px;
   font: inherit;
   font-size: 18px;
 }
 
-form#updateProject button, form.deleteForm button {
+form#updateProject button, form.deleteForm button, form#updateBio button {
   background: #555;
   padding: 3px;
   color: #fff;
