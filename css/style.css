@@ -89,7 +89,6 @@ html {
 header {
   height: 400px;
   background: url('../img/bg_header.png') center -193px;
-  border-bottom: #da8403 solid 2px;
   text-align: center;
 }
 
@@ -106,7 +105,6 @@ header #header_image {
 
 header #header_name {
   font-size: 73px;
-  color: #da8403;
 }
 
 header #header_name #header_sname {
@@ -158,7 +156,6 @@ h1, .title {
 .project .more {
 	float: right;
 	font-weight: bold;
-  color: #DA8403;
 }
 
 .projectPage h1 {

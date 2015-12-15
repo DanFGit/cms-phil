@@ -42,7 +42,6 @@ form#updateProject button, form.deleteForm button {
   background: #555;
   padding: 3px;
   color: #fff;
-  border: 1px solid #da8403;
   margin: 2px 2px 0 2px;
   font: 19px MisoLight, sans-serif
 }
@@ -55,7 +54,6 @@ a.button {
   background: #555;
   padding: 3px;
   color: #fff;
-  border: 1px solid #da8403;
   margin: 2px 2px 0 2px;
   float: right;
 }
@@ -113,7 +111,6 @@ nav a:first-child {
 .projectPreview .more {
 	float: right;
 	font-weight: bold;
-  color: #DA8403;
 }
 
 .previewHeader {

@@ -43,7 +43,7 @@
           <div class="description">
             <a href="post.php?id=<?php echo $result['id']; ?>"><h1><?php echo $result['title']; ?></h1></a>
               <?php echo nl2br($result['summary']); ?>
-              <br><a class="more" href="post.php?id=<?php echo $result['id']; ?>">Read More &raquo;</a>
+              <br><a style="color: #<?php echo $me['colour']; ?>;" class="more" href="post.php?id=<?php echo $result['id']; ?>">Read More &raquo;</a>
           </div>
         </div>
       <?php } ?>
