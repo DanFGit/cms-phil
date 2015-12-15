@@ -152,7 +152,20 @@ h1, .title {
 .project .previews {
   width: 371px;
   float: left;
-  margin-right: 6px;
+  margin-right: 16px;
+}
+
+.project .more {
+	float: right;
+	font-weight: bold;
+  color: #DA8403;
+}
+
+.projectPage h1 {
+    text-align: center;
+    font-size: 43px;
+    margin-bottom: 13px;
+    font-weight: bold;
 }
 
 @media screen and (max-width: 900px) {

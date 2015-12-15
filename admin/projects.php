@@ -182,7 +182,9 @@
           } else {
             echo "No projects available OR unable to fetch project list.";
           } ?>
-          <br><br><br><a href="new.php">Create New Project</a><?php
+          <div class="adminnotice">
+            <a href="new.php">Create New Project</a>
+          </div><?php
         }
 
       } else {
