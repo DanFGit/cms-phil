@@ -72,10 +72,10 @@
           }
 
           if($stmt->rowCount()==1) {
-            echo "Success.";
+            echo "<div class='adminnotice'><span class='notice'>Post successfully deleted. Redirecting...</span></div>";
             ?><meta http-equiv="refresh" content="0"><?php
           } else {
-            echo "Delete Failed.";
+            echo "<div class='adminnotice'><span class='notice'>Delete Failed.</span></div>";
           }
 
         }
@@ -89,9 +89,16 @@
             <div class="description">
               <a href="#"><h1><?php echo $_POST['title']; ?></h1></a>
                 <?php echo nl2br($_POST['summary']); ?>
+                <br><a class="more">Read More &raquo;</a>
             </div>
           </div>
-          <div class="previewHeader"><h1>On the project page:</h1></div>
+          <div class="previewHeader"><h1>On the post page:</h1></div>
+          <div class="projectPage preview">
+
+                <h1><?php echo $_POST['title']; ?></h1>
+                <?php echo nl2br($_POST['content']); ?>
+
+          </div>
 
           <?php showForm($_POST['title'], $_POST['summary'], $_POST['content'], $_POST['image'] );
         }
@@ -116,10 +123,10 @@
           }
 
           if($stmt->rowCount()==1) {
-            echo "Success.";
+            echo "<div class='adminnotice'><span class='notice'>Post edited successfully. Redirecting...</span></div>";
             ?><meta http-equiv="refresh" content="0"><?php
           } else {
-            echo "Update Failed.";
+            echo "<div class='adminnotice'><span class='notice'>Update Failed.</span></div>";
           }
 
         }
@@ -135,14 +142,14 @@
             $stmt->bindParam(':id', $_GET['id'], PDO::PARAM_STR);
             $stmt->execute();
           } catch (PDOException $e) {
-    		    echo 'Could not fetch project list: ' . $e->getMessage();
+    		    echo "<div class='adminnotice'><span class='notice'>Could not fetch post: " . $e->getMessage() . "</span></div>";
           }
 
           if($stmt->rowCount()==1) {
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             showForm($result['title'], $result['summary'], $result['content'], $result['image']);
           } else {
-            echo "No such project with id " . $_GET['id'] . ".";
+            echo "<div class='adminnotice'><span class='notice'>No such post with id " . $_GET['id'] . ".</span></div>";
           }
 
         }
@@ -157,7 +164,7 @@
             $stmt->execute();
             echo "<span class='notice'>Below is a list of projects displayed on the side. You can edit, delete, hide and reorder them from this page.</span>";
           } catch (PDOException $e) {
-    		    echo 'Could not fetch project list: ' . $e->getMessage();
+    		    echo "<div class='adminnotice'><span class='notice'>Could not fetch project list: " . $e->getMessage() . "</span></div>";
           }
           ?></div><?php
 
@@ -180,7 +187,7 @@
               </div> <?php
             }
           } else {
-            echo "No projects available OR unable to fetch project list.";
+            echo "<div class='adminnotice'><span class='notice'>No projects available OR unable to fetch project list. Try creating a project!</span></div>";
           } ?>
           <div class="adminnotice">
             <a href="new.php">Create New Project</a>
@@ -189,7 +196,7 @@
 
       } else {
         // NO ADMIN LOGGED IN
-        echo "You shouldn't be here.";
+        echo "<div class='adminnotice'><span class='notice'>You shouldn't be here.</span></div>";
 
       } //end login check ?>
     </div>

@@ -110,11 +110,21 @@ nav a:first-child {
     min-height: 199px;
 }
 
+.projectPreview .more {
+	float: right;
+	font-weight: bold;
+  color: #DA8403;
+}
+
 .previewHeader {
     background: #ffffff;
     padding: 5px 13px;
     box-shadow: 0px 5px 5px #ccc;
     margin-top: 10px;
+}
+
+.projectPage.preview {
+    margin-top: 20px;
 }
 
 

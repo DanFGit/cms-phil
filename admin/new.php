@@ -59,9 +59,16 @@
             <div class="description">
               <a href="#"><h1><?php echo $_POST['title']; ?></h1></a>
                 <?php echo nl2br($_POST['summary']); ?>
+                <br><a class="more">Read More &raquo;</a>
             </div>
           </div>
           <div class="previewHeader"><h1>On the project page:</h1></div>
+          <div class="projectPage preview">
+
+                <h1><?php echo $_POST['title']; ?></h1>
+                <?php echo nl2br($_POST['content']); ?>
+
+          </div>
 
           <?php showForm($_POST['title'], $_POST['summary'], $_POST['content'], $_POST['image']);
         }
