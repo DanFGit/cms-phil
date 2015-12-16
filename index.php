@@ -27,9 +27,7 @@
 
       <div id="about">
         <h1>About Me</h1>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam a luctus lorem. Fusce sed mauris ac turpis suscipit aliquet. Maecenas in eros massa. Proin posuere odio sit amet orci ultricies interdum. Aenean rutrum nunc sem. Ut at nunc malesuada, vestibulum purus ac, congue massa. Praesent feugiat vestibulum viverra.
-
-        Sed convallis egestas turpis sed rutrum. Phasellus bibendum enim eu erat ornare aliquam. Nam sit amet eros mattis, vulputate velit id, malesuada tellus. Nulla quis augue venenatis urna hendrerit consequat. Cras nec suscipit dolor. Praesent malesuada sapien neque, et viverra ligula viverra non. Cras dignissim dui in semper scelerisque. Proin lorem urna, eleifend ac ultrices sit amet, congue iaculis mi. Fusce ac sem ipsum. Duis sem orci, euismod vehicula felis sed, tincidunt tincidunt felis. Sed mollis luctus tincidunt. Praesent a elit neque. Proin erat enim, elementum non ligula sollicitudin, scelerisque ultricies sem. Etiam faucibus ipsum in metus sagittis laoreet. Vestibulum lobortis pharetra congue.
+        <?php echo $me['about']; ?>
       </div>
 
       <?php
