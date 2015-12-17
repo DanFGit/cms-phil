@@ -26,10 +26,12 @@
                   forename=:forename,
                   surname=:surname,
                   skills=:skills,
+                  about=:about,
                   colour=:colour
                   WHERE id=:id";
 
           $updateSkills = str_replace(array("\r\n", "\n\r", "\n", "\r"), "/", $_POST['skills']);
+          $updateAbout = str_replace(array("\r\n", "\n\r", "\n", "\r"), "<br>", $_POST['about']);
           $updateColour = strtoupper($_POST['colour']);
           $id = 1;
 
@@ -39,6 +41,7 @@
             $stmt->bindParam(':forename', $_POST['forename'], PDO::PARAM_STR);
             $stmt->bindParam(':surname', $_POST['surname'], PDO::PARAM_STR);
             $stmt->bindParam(':skills', $updateSkills, PDO::PARAM_STR);
+            $stmt->bindParam(':about', $updateAbout, PDO::PARAM_STR);
             $stmt->bindParam(':colour', $updateColour, PDO::PARAM_STR);
             $stmt->execute();
           } catch (PDOException $e) {
@@ -46,7 +49,7 @@
           }
 
           if($stmt->rowCount()==1) {
-            echo "<div class='adminnotice'><span class='notice'>Settings updated successfully.</span></div>";
+            echo "<div class='adminnotice'><span class='success'>Your information has been successfully updated.</span></div>";
 
             try {
               $settings_stmt = $db->prepare($settings_sql);
@@ -60,18 +63,90 @@
             echo "<div class='adminnotice'><span class='notice'>Settings Update Failed.</span></div>";
           }
         } elseif(isset($_POST['action']) && $_POST['action'] == "previewChanges"){
-          //preview changes
+          echo "<div class='adminnotice'><span class='notice'>You have unsaved changes! Click Save Changes to apply them.</span></div>";
+        }  elseif(isset($_POST['action']) && $_POST['action'] == "previewPicture"){
+          echo "<div class='adminnotice'><span class='notice'>Happy with your changes?"; ?>
+
+            <form id="saveChanges" method="POST">
+              <div>
+                <input type="hidden" name="profileChange" value="<?php echo $_FILES["profilepic"]["error"]; ?>" />
+                <input type="hidden" name="headerChange" value="<?php echo $_FILES["headerpic"]["error"]; ?>" />
+                <button style="border: 1px solid #<?php echo $me['colour']; ?>;" type="submit" name="action" value="savePreview">Click here to Save Changes</button>
+              </div>
+            </form>
+
+          <?php echo "</span></div>";
+        } elseif(isset($_POST['action']) && $_POST['action'] == "savePreview"){
+          if($_POST['profileChange'] == 0) {
+            if(rename("../img/preview.jpg", "../img/me.jpg")){
+              echo "<div class='adminnotice'><span class='success'>Profile Picture Updated Successfully</span></div>";
+            } else {
+              echo "<div class='adminnotice'><span class='notice'>Profile Picture Update Failed</span></div>";
+            }
+          }
+          if($_POST['headerChange'] == 0) {
+            if(rename("../img/preview_header.png", "../img/bg_header.png")){
+              echo "<div class='adminnotice'><span class='success'>Header Updated Successfully</span></div>";
+            } else {
+              echo "<div class='adminnotice'><span class='notice'>Header Update Failed</span></div>";
+            }
+          }
+        } elseif(isset($_POST['action']) && $_POST['action'] == "savePicture") {
+          if($_FILES["profilepic"]["error"] == 0){
+            $target_dir = "../img/";
+            $target_file = $target_dir . "me.jpg";
+
+            $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
+
+            $imageCheck = getimagesize($_FILES["profilepic"]["tmp_name"]);
+            if($imageCheck == false) {
+              //fileupload is not an image
+              echo "<div class='adminnotice'><span class='notice'>Sorry, only JPG, JPEG, PNG and GIF files are supported! You uploaded a " . strtoupper($imageFileType) . " file.</span></div>";
+            } elseif($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
+              //fileupload is not a supported image type
+              echo "<div class='adminnotice'><span class='notice'>Sorry, only JPG, JPEG, PNG and GIF files are supported! You uploaded a " . strtoupper($imageFileType) . " file.</span></div>";
+            } else {
+              //fileupload is an image
+              if (move_uploaded_file($_FILES["profilepic"]["tmp_name"], $target_file)) {
+                echo "<div class='adminnotice'><span class='success'>Your new profile picture has been uploaded.</span></div>";
+              } else {
+                echo "<div class='adminnotice'><span class='notice'>Sorry, there was an error uploading your file.</span></div>";
+              }
+            }
+          }
+          if($_FILES["headerpic"]["error"] == 0){
+            $target_dir = "../img/";
+            $target_file = $target_dir . "bg_header.png";
+
+            $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
+
+            $imageCheck = getimagesize($_FILES["headerpic"]["tmp_name"]);
+            if($imageCheck == false) {
+              //fileupload is not an image
+              echo "<div class='adminnotice'><span class='notice'>Sorry, only JPG, JPEG, PNG and GIF files are supported! You uploaded a " . strtoupper($imageFileType) . " file.</span></div>";
+            } elseif($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
+              //fileupload is not a supported image type
+              echo "<div class='adminnotice'><span class='notice'>Sorry, only JPG, JPEG, PNG and GIF files are supported! You uploaded a " . strtoupper($imageFileType) . " file.</span></div>";
+            } else {
+              //fileupload is an image
+              if (move_uploaded_file($_FILES["headerpic"]["tmp_name"], $target_file)) {
+                echo "<div class='adminnotice'><span class='success'>Your new header image has been uploaded.</span></div>";
+              } else {
+                echo "<div class='adminnotice'><span class='notice'>Sorry, there was an error uploading your file.</span></div>";
+              }
+            }
+          }
         } ?>
 
         <form id="updateBio" method="POST">
           <div>
-            <label for="title">First Name</label>
+            <label for="forename">First Name</label>
             <input type="text" name="forename" id="forename" value="<?php echo $me['forename']; ?>" required />
               <br><br>
-            <label for="summary">Last Name</label>
+            <label for="surname">Last Name</label>
             <input type="text" name="surname" id="surname" value="<?php echo $me['surname']; ?>" required />
               <br><br>
-            <label for="content">Skills (put each on a new line)</label>
+            <label for="skills">Skills (put each on a new line)</label>
             <textarea rows="7" name="skills" id="skills" required><?php
               $skills = explode('/', $me['skills']);
 
@@ -81,7 +156,10 @@
               }
             ?></textarea>
               <br><br>
-            <label for="image">Colour</label>
+            <label for="about">About You</label>
+            <textarea rows="10" name="about" id="about" required><?php echo str_replace("<br>", "\n", $me['about']); ?></textarea>
+              <br><br>
+            <label for="colour">Colour</label>
             <input type="text" name="colour" id="colour" value="<?php echo $me['colour']; ?>" required />
               <br><br>
 
@@ -90,34 +168,22 @@
           </div>
         </form>
 
-        <form id="updateBio" method="POST">
+        <form enctype="multipart/form-data" id="updateBio" method="POST">
           <div>
             <label for="title">Profile Picture</label>
-            <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
-            <input name="userfile" type="file" style="font-size: 15px; margin: 5px 0 0;"/>
+            <input type="hidden" name="MAX_FILE_SIZE" value="500000" />
+            <input name="profilepic" type="file" style="font-size: 15px; margin: 5px 0 0;"/>
               <br><br>
 
-            <button style="border: 1px solid #<?php echo $me['colour']; ?>;" type="submit" name="action" value="savePicture">Save Picture</button>
-            <button style="border: 1px solid #<?php echo $me['colour']; ?>;" type="submit" name="action" value="previewPicture">Preview Picture</button>
-          </div>
-        </form>
-
-        <form id="updateBio" method="POST">
-          <div>
             <label for="title">Header Image</label>
-            <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
-            <input name="userfile" type="file" style="font-size: 15px; margin: 5px 0 0;"/>
+            <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+            <input name="headerpic" type="file" style="font-size: 15px; margin: 5px 0 0;"/>
               <br><br>
 
-            <button style="border: 1px solid #<?php echo $me['colour']; ?>;" type="submit" name="action" value="saveHeader">Save Header Image</button>
-            <button style="border: 1px solid #<?php echo $me['colour']; ?>;" type="submit" name="action" value="previewHeader">Preview Header Image</button>
+            <button style="border: 1px solid #<?php echo $me['colour']; ?>;" type="submit" name="action" value="savePicture">Save Changes</button>
+            <button style="border: 1px solid #<?php echo $me['colour']; ?>;" type="submit" name="action" value="previewPicture">Preview Changes</button>
           </div>
         </form>
-
-        <?php if($_POST['action'] == "savePicture") {
-          var_dump($_POST);
-          var_dump($_FILES);
-        } ?>
 
       <?php } else {
         // NO ADMIN LOGGED IN

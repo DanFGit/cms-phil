@@ -18,6 +18,12 @@ form#updateProject, form#updateBio {
   margin-top: 30px;
 }
 
+form#saveChanges {
+  padding: 0;
+  box-shadow: none;
+  margin-top: 8px;
+}
+
 form#updateProject label, form#updateBio label {
   display: block;
   font-size: 1.4em;
@@ -38,7 +44,7 @@ form#updateProject textarea, form#updateBio textarea {
   font-size: 18px;
 }
 
-form#updateProject button, form.deleteForm button, form#updateBio button {
+form#updateProject button, form.deleteForm button, form#updateBio button, form#saveChanges button {
   background: #555;
   padding: 3px;
   color: #fff;
@@ -84,6 +90,11 @@ nav a:first-child {
 
 .notice {
   color: red;
+  font-weight: bold;
+}
+
+.success {
+  color: green;
   font-weight: bold;
 }
 
