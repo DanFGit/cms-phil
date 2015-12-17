@@ -18,11 +18,9 @@
     <title>Admin - Phil Wilkinson</title>
   </head>
   <body>
-    <header style="height:78px;">
-      <div id="header_name">
-        <span id="header_fname"><a href="index.php">admin</a></span>
-      </div>
-    </header>
+    <?php
+    include_once('header.php');
+    ?>
 
     <div id="content">
 

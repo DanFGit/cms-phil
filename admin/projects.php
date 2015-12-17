@@ -2,7 +2,7 @@
 
   include_once('../common/base.php');
 
-  function showForm($title, $summary, $content, $image) {?>
+  function showForm($colour, $title, $summary, $content, $image) {?>
     <form id="updateProject" method="POST">
       <div>
         <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>" required />
@@ -19,8 +19,8 @@
         <input type="text" name="image" id="image" value="<?php echo $image; ?>" required />
           <br><br>
 
-        <button type="submit" name="action" value="saveChanges">Save Changes</button>
-        <button type="submit" name="action" value="previewChanges">Preview Changes</button>
+        <button style="border: 1px solid #<?php echo $colour; ?>;" type="submit" name="action" value="saveChanges">Save Changes</button>
+        <button style="border: 1px solid #<?php echo $colour; ?>;" type="submit" name="action" value="previewChanges">Preview Changes</button>
       </div>
     </form>
   <?php }
@@ -37,13 +37,10 @@
     <title>Admin - Phil Wilkinson</title>
   </head>
   <body>
-    <header style="height:78px;">
-      <div id="header_name">
-        <span id="header_fname"><a href="index.php">admin</a></span>
-      </div>
-    </header>
-
-    <?php if(isset($_SESSION['loggedin'])) { include "nav.php"; } ?>
+    <?php
+    include_once('header.php');
+    if(isset($_SESSION['loggedin'])) { include "nav.php"; }
+    ?>
 
     <div id="content">
 
@@ -89,7 +86,7 @@
             <div class="description">
               <a href="#"><h1><?php echo $_POST['title']; ?></h1></a>
                 <?php echo nl2br($_POST['summary']); ?>
-                <br><a class="more">Read More &raquo;</a>
+                <br><a style="color: #<?php echo $me['colour']; ?>;" class="more">Read More &raquo;</a>
             </div>
           </div>
           <div class="previewHeader"><h1>On the post page:</h1></div>
@@ -100,7 +97,7 @@
 
           </div>
 
-          <?php showForm($_POST['title'], $_POST['summary'], $_POST['content'], $_POST['image'] );
+          <?php showForm($me['colour'], $_POST['title'], $_POST['summary'], $_POST['content'], $_POST['image'] );
         }
         elseif(isset($_POST['action']) && $_POST['action'] == "saveChanges") {
           $sql = "UPDATE projects SET
@@ -147,7 +144,7 @@
 
           if($stmt->rowCount()==1) {
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            showForm($result['title'], $result['summary'], $result['content'], $result['image']);
+            showForm($me['colour'], $result['title'], $result['summary'], $result['content'], $result['image']);
           } else {
             echo "<div class='adminnotice'><span class='notice'>No such post with id " . $_GET['id'] . ".</span></div>";
           }
@@ -162,9 +159,9 @@
           try {
             $stmt = $db->prepare($sql);
             $stmt->execute();
-            echo "<span class='notice'>Below is a list of projects displayed on the side. You can edit, delete, hide and reorder them from this page.</span>";
+            echo "<span class='notice'>Below is a list of posts displayed on the site. You can edit, delete, and hide them from this page.</span>";
           } catch (PDOException $e) {
-    		    echo "<div class='adminnotice'><span class='notice'>Could not fetch project list: " . $e->getMessage() . "</span></div>";
+    		    echo "<div class='adminnotice'><span class='notice'>Could not fetch post list: " . $e->getMessage() . "</span></div>";
           }
           ?></div><?php
 
@@ -174,16 +171,16 @@
               $result = $stmt->fetch(PDO::FETCH_ASSOC); ?>
               <div class="project">
                 <span class="title"><?php echo $result['title']; ?></span>
-                <a class="button" href="?id=<?php echo $result['id']; ?>">Down</a>
-                <a class="button" href="?id=<?php echo $result['id']; ?>">Up</a>
+                <a style="border: 1px solid #<?php echo $me['colour']; ?>;" class="button" href="?id=<?php echo $result['id']; ?>">Down</a>
+                <a style="border: 1px solid #<?php echo $me['colour']; ?>;" class="button" href="?id=<?php echo $result['id']; ?>">Up</a>
                 <form method="POST" class="deleteForm">
                   <input type="hidden" name="id" value="<?php echo $result['id']; ?>" />
                   <input type="hidden" name="action" value="deleteProject" />
-                  <button>Delete</button>
+                  <button style="border: 1px solid #<?php echo $me['colour']; ?>;" >Delete</button>
                 </form>
                  <!-- <a class="button delete" href="?id=<?php echo $result['id']; ?>">Delete</a>-->
-                <a class="button" href="?id=<?php echo $result['id']; ?>">Hide</a>
-                <a class="button" href="?id=<?php echo $result['id']; ?>">Edit</a>
+                <a style="border: 1px solid #<?php echo $me['colour']; ?>;" class="button" href="?id=<?php echo $result['id']; ?>">Hide</a>
+                <a style="border: 1px solid #<?php echo $me['colour']; ?>;" class="button" href="?id=<?php echo $result['id']; ?>">Edit</a>
               </div> <?php
             }
           } else {

@@ -11,38 +11,43 @@ form#login-form label {
   text-align: left;
 }
 
-form#updateProject {
+form#updateProject, form#updateBio {
   background: #ffffff;
   padding: 40px;
   box-shadow: 0px 5px 5px #ccc;
   margin-top: 30px;
 }
 
-form#updateProject label {
+form#saveChanges {
+  padding: 0;
+  box-shadow: none;
+  margin-top: 8px;
+}
+
+form#updateProject label, form#updateBio label {
   display: block;
   font-size: 1.4em;
   font-weight: bold;
 }
 
-form#updateProject input {
+form#updateProject input, form#updateBio input {
   width: 744px;
   padding: 4px;
   font: inherit;
   font-size: 18px;
 }
 
-form#updateProject textarea {
+form#updateProject textarea, form#updateBio textarea {
   width: 744px;
   padding: 4px;
   font: inherit;
   font-size: 18px;
 }
 
-form#updateProject button, form.deleteForm button {
+form#updateProject button, form.deleteForm button, form#updateBio button, form#saveChanges button {
   background: #555;
   padding: 3px;
   color: #fff;
-  border: 1px solid #da8403;
   margin: 2px 2px 0 2px;
   font: 19px MisoLight, sans-serif
 }
@@ -55,7 +60,6 @@ a.button {
   background: #555;
   padding: 3px;
   color: #fff;
-  border: 1px solid #da8403;
   margin: 2px 2px 0 2px;
   float: right;
 }
@@ -89,6 +93,11 @@ nav a:first-child {
   font-weight: bold;
 }
 
+.success {
+  color: green;
+  font-weight: bold;
+}
+
 .project {
   margin: 0;
   background: white;
@@ -113,7 +122,6 @@ nav a:first-child {
 .projectPreview .more {
 	float: right;
 	font-weight: bold;
-  color: #DA8403;
 }
 
 .previewHeader {

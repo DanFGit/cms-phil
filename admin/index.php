@@ -14,13 +14,10 @@
     <title>Admin - Phil Wilkinson</title>
   </head>
   <body>
-    <header style="height:78px;">
-      <div id="header_name">
-        <span id="header_fname"><a href="index.php">admin</a></span>
-      </div>
-    </header>
-
-    <?php if(isset($_SESSION['loggedin'])) { include "nav.php"; } ?>
+    <?php
+    include_once('header.php');
+    if(isset($_SESSION['loggedin'])) { include "nav.php"; }
+    ?>
 
     <div id="content">
 

@@ -1,18 +1,41 @@
-<header>
-  <div id="header_image">
-    <a href="index.php"><img src="img/me.jpg" alt="Phil Wilkinson"></a>
-  </div>
+<?php
 
-  <div id="header_name">
-    <a href="index.php"><span id="header_fname">phil</span><span id="header_sname">wilkinson</span></a>
-  </div>
+$settings_sql = "SELECT * FROM settings";
 
-  <div id="header_roles">
-    <span class="role">environment artist</span>
-    <span class="role">3d modeller</span>
-    <span class="role">gameplay designer</span>
-    <span class="role">lore writer</span>
-    <span class="role">animator</span>
-    <span class="role">level designer</span>
-  </div>
-</header>
+try {
+  $settings_stmt = $db->prepare($settings_sql);
+  $settings_stmt->execute();
+} catch (PDOException $e) {
+  echo "Database Error: " . $e->getMessage();
+}
+
+if($settings_stmt->rowCount()==1) {
+  $me = $settings_stmt->fetch(PDO::FETCH_ASSOC); ?>
+
+  <header style="border-bottom: #<?php echo $me['colour']; ?> solid 2px;">
+    <div id="header_image">
+      <a href="index.php"><img src="img/me.jpg" alt="<?php echo $me['forename'] . ' ' . $me['surname']; ?>"></a>
+    </div>
+
+    <div id="header_name" style="color: #<?php echo $me['colour']; ?>">
+      <a href="index.php"><span id="header_fname"><?php echo strtolower($me['forename']); ?></span><span id="header_sname"><?php echo strtolower($me['surname']); ?></span></a>
+    </div>
+
+
+
+    <div id="header_roles">
+      <?php
+      $skills = explode('/', $me['skills']);
+
+      for($i = 0, $size = count($skills); $i < $size; $i++){
+        echo "<span class='role'>" . $skills[$i] . "</span>";
+      }
+      ?>
+    </div>
+  </header>
+
+<?php
+} else {
+  echo "Settings have not been setup correctly, please reinstall software.";
+}
+?>

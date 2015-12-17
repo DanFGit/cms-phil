@@ -2,7 +2,7 @@
 
   include_once('../common/base.php');
 
-  function showForm($title = '', $summary = '', $content = '', $image = '') {?>
+  function showForm($colour, $title = '', $summary = '', $content = '', $image = '') {?>
     <form id="updateProject" method="POST">
       <div>
         <label for="title">Title</label>
@@ -18,8 +18,8 @@
         <input type="text" name="image" id="image" value="<?php echo $image; ?>" required />
           <br><br>
 
-        <button type="submit" name="action" value="savePost">Save Post</button>
-        <button type="submit" name="action" value="previewPost">Preview Post</button>
+        <button style="border: 1px solid #<?php echo $colour; ?>;" type="submit" name="action" value="savePost">Save Post</button>
+        <button style="border: 1px solid #<?php echo $colour; ?>;" type="submit" name="action" value="previewPost">Preview Post</button>
       </div>
     </form>
   <?php }
@@ -36,13 +36,10 @@
     <title>Admin - Phil Wilkinson</title>
   </head>
   <body>
-    <header style="height:78px;">
-      <div id="header_name">
-        <span id="header_fname"><a href="index.php">admin</a></span>
-      </div>
-    </header>
-
-    <?php if(isset($_SESSION['loggedin'])) { include "nav.php"; } ?>
+    <?php
+    include_once('header.php');
+    if(isset($_SESSION['loggedin'])) { include "nav.php"; }
+    ?>
 
     <div id="content">
 
@@ -70,7 +67,7 @@
 
           </div>
 
-          <?php showForm($_POST['title'], $_POST['summary'], $_POST['content'], $_POST['image']);
+          <?php showForm($me['colour'], $_POST['title'], $_POST['summary'], $_POST['content'], $_POST['image']);
         }
         elseif(isset($_POST['action']) && $_POST['action'] == "savePost") {
 
@@ -95,7 +92,7 @@
             echo "Insert Failed.";
           }
         } else {
-          showForm();
+          showForm($me['colour']);
 
 
         }
