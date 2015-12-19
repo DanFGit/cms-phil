@@ -78,14 +78,14 @@
           <?php echo "</span></div>";
         } elseif(isset($_POST['action']) && $_POST['action'] == "savePreview"){
           if($_POST['profileChange'] == 0) {
-            if(rename("../img/preview.jpg", "../img/me.jpg")){
+            if(rename("../img/upload/preview.jpg", "../img/upload/me.jpg")){
               echo "<div class='adminnotice'><span class='success'>Profile Picture Updated Successfully</span></div>";
             } else {
               echo "<div class='adminnotice'><span class='notice'>Profile Picture Update Failed</span></div>";
             }
           }
           if($_POST['headerChange'] == 0) {
-            if(rename("../img/preview_header.png", "../img/bg_header.png")){
+            if(rename("../img/upload/preview_header.png", "../img/upload/bg_header.png")){
               echo "<div class='adminnotice'><span class='success'>Header Updated Successfully</span></div>";
             } else {
               echo "<div class='adminnotice'><span class='notice'>Header Update Failed</span></div>";
@@ -93,7 +93,7 @@
           }
         } elseif(isset($_POST['action']) && $_POST['action'] == "savePicture") {
           if($_FILES["profilepic"]["error"] == 0){
-            $target_dir = "../img/";
+            $target_dir = "../img/upload/";
             $target_file = $target_dir . "me.jpg";
 
             $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
@@ -115,7 +115,7 @@
             }
           }
           if($_FILES["headerpic"]["error"] == 0){
-            $target_dir = "../img/";
+            $target_dir = "../img/upload/";
             $target_file = $target_dir . "bg_header.png";
 
             $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);

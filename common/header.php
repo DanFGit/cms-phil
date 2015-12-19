@@ -14,7 +14,7 @@ if($settings_stmt->rowCount()==1) {
 
   <header style="border-bottom: #<?php echo $me['colour']; ?> solid 2px;">
     <div id="header_image">
-      <a href="index.php"><img src="img/me.jpg" alt="<?php echo $me['forename'] . ' ' . $me['surname']; ?>"></a>
+      <a href="index.php"><img src="img/upload/me.jpg" alt="<?php echo $me['forename'] . ' ' . $me['surname']; ?>"></a>
     </div>
 
     <div id="header_name" style="color: #<?php echo $me['colour']; ?>">
