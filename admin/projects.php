@@ -20,7 +20,7 @@
           <br><br>
 
         <button style="border: 1px solid #<?php echo $colour; ?>;" type="submit" name="action" value="saveChanges">Save Changes</button>
-        <button style="border: 1px solid #<?php echo $colour; ?>;" type="submit" name="action" value="previewChanges">Preview Changes</button>
+        <button style="border: 1px solid #<?php echo $colour; ?>;" type="submit" name="action" value="previewPostChanges">Preview Changes</button>
       </div>
     </form>
   <?php }
@@ -50,7 +50,7 @@
 
         //TODO:
         //if delete, delete and redirect
-        //if previewChanges, preview and show form
+        //if previewPostChanges, preview and show form
         //if saveChanges, save and redirect
         //if id set, show form
         //error no id set
@@ -76,7 +76,7 @@
           }
 
         }
-        elseif (isset($_POST['action']) && $_POST['action'] == "previewChanges") { ?>
+        elseif (isset($_POST['action']) && $_POST['action'] == "previewPostChanges") { ?>
 
           <div class="previewHeader"><h1>On the homepage:</h1></div>
           <div class="projectPreview">

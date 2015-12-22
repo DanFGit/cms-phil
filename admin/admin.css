@@ -11,7 +11,7 @@ form#login-form label {
   text-align: left;
 }
 
-form#updateProject, form#updateBio {
+form#updateProject, form#updateBio, form#uploadImage {
   background: #ffffff;
   padding: 40px;
   box-shadow: 0px 5px 5px #ccc;
@@ -24,17 +24,33 @@ form#saveChanges {
   margin-top: 8px;
 }
 
-form#updateProject label, form#updateBio label {
+form#updateProject label, form#updateBio label, form#uploadImage label {
   display: block;
   font-size: 1.4em;
   font-weight: bold;
 }
 
-form#updateProject input, form#updateBio input {
+form#updateProject input, form#updateBio input, form#uploadImage input {
   width: 744px;
   padding: 4px;
   font: inherit;
   font-size: 18px;
+}
+
+form#updateBio input[type="radio"] {
+  width: 13px;
+}
+
+form#updateBio span.display {
+  width: 20%;
+  display: inline-block;
+  padding-left: 31px;
+}
+
+form emphasis {
+  font-weight: normal;
+  font-size: 80%;
+  color: #bbb;
 }
 
 form#updateProject textarea, form#updateBio textarea {
@@ -44,7 +60,7 @@ form#updateProject textarea, form#updateBio textarea {
   font-size: 18px;
 }
 
-form#updateProject button, form.deleteForm button, form#updateBio button, form#saveChanges button {
+form#updateProject button, form.deleteForm button, form#updateBio button, form#saveChanges button, form#uploadImage button {
   background: #555;
   padding: 3px;
   color: #fff;

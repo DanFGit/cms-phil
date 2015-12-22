@@ -146,7 +146,7 @@
             <label for="surname">Last Name</label>
             <input type="text" name="surname" id="surname" value="<?php echo $me['surname']; ?>" required />
               <br><br>
-            <label for="skills">Skills (put each on a new line)</label>
+            <label for="skills">Skills <emphasis>(put each on a new line)</emphasis></label>
             <textarea rows="7" name="skills" id="skills" required><?php
               $skills = explode('/', $me['skills']);
 
