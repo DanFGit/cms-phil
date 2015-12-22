@@ -10,18 +10,17 @@ try {
 }
 
 if($settings_stmt->rowCount()==1) {
-  $me = $settings_stmt->fetch(PDO::FETCH_ASSOC); ?>
+  $me = $settings_stmt->fetch(PDO::FETCH_ASSOC);
+  ?>
 
   <header style="border-bottom: #<?php echo $me['colour']; ?> solid 2px;">
     <div id="header_image">
-      <a href="index.php"><img src="img/me.jpg" alt="<?php echo $me['forename'] . ' ' . $me['surname']; ?>"></a>
+      <a href="index.php"><img src="img/upload/me.jpg" alt="<?php echo $me['forename'] . ' ' . $me['surname']; ?>"></a>
     </div>
 
     <div id="header_name" style="color: #<?php echo $me['colour']; ?>">
       <a href="index.php"><span id="header_fname"><?php echo strtolower($me['forename']); ?></span><span id="header_sname"><?php echo strtolower($me['surname']); ?></span></a>
     </div>
-
-
 
     <div id="header_roles">
       <?php

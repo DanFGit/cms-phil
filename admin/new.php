@@ -14,9 +14,10 @@
         <label for="content">Content</label>
         <textarea rows="10" name="content" id="formcontent" required><?php echo $content; ?></textarea>
           <br><br>
-        <label for="image">Image URL</label>
-        <input type="text" name="image" id="image" value="<?php echo $image; ?>" required />
-          <br><br>
+        <label for="title">Preview Image <emphasis>(371x195px recommended)</emphasis></label>
+        <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+        <input name="previewpic" type="file" style="font-size: 15px; margin: 5px 0 0;"/>
+            <br><br>
 
         <button style="border: 1px solid #<?php echo $colour; ?>;" type="submit" name="action" value="savePost">Save Post</button>
         <button style="border: 1px solid #<?php echo $colour; ?>;" type="submit" name="action" value="previewPost">Preview Post</button>
@@ -46,7 +47,36 @@
       <?php if(isset($_SESSION['loggedin'])) {
         //ADMIN IS LOGGED IN
 
-        if(isset($_POST['action']) && $_POST['action'] == "previewPost") { ?>
+        if(isset($_POST['action']) && $_POST['action'] == "previewPost") {
+
+          if($_FILES["previewpic"]["error"] == 0){
+            $target_dir = "../img/upload/";
+            $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+
+            $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
+
+            $imageCheck = getimagesize($_FILES["headerpic"]["tmp_name"]);
+            if (file_exists($target_file)) $fileExists = true;
+            if($imageCheck == false) {
+              //fileupload is not an image
+              echo "<div class='adminnotice'><span class='notice'>Sorry, only JPG, JPEG, PNG and GIF files are supported! You uploaded a " . strtoupper($imageFileType) . " file.</span></div>";
+            } elseif($fileExists) {
+              //fileupload already exists
+              echo "<div class='adminnotice'><span class='notice'>Sorry, " . $target_file . " already exists. Rename your file then reupload!</span></div>";
+            } elseif($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
+              //fileupload is not a supported image type
+              echo "<div class='adminnotice'><span class='notice'>Sorry, only JPG, JPEG, PNG and GIF files are supported! You uploaded a " . strtoupper($imageFileType) . " file.</span></div>";
+            } else {
+              //fileupload is an image
+              if (move_uploaded_file($_FILES["headerpic"]["tmp_name"], $target_file)) {
+                echo "<div class='adminnotice'><span class='success'>Your new header image has been uploaded.</span></div>";
+              } else {
+                echo "<div class='adminnotice'><span class='notice'>Sorry, there was an error uploading your file.</span></div>";
+              }
+            }
+          }
+
+          ?>
 
           <div class="previewHeader"><h1>On the homepage:</h1></div>
           <div class="projectPreview">
@@ -93,14 +123,10 @@
           }
         } else {
           showForm($me['colour']);
-
-
         }
-
       } else {
         // NO ADMIN LOGGED IN
         echo "You shouldn't be here.";
-
       } //end login check ?>
     </div>
   </body>

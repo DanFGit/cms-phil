@@ -20,7 +20,7 @@ if($settings_stmt->rowCount()==1) {
     $me['surname'] = $_POST['surname']; ?>
     <header style="border-bottom: #<?php echo $me['colour']; ?> solid 2px;">
       <div id="header_image">
-        <a href="index.php"><img src="../img/me.jpg" alt="<?php echo $me['forename'] . ' ' . $me['surname']; ?>"></a>
+        <a href="index.php"><img src="../img/upload/me.jpg" alt="<?php echo $me['forename'] . ' ' . $me['surname']; ?>"></a>
       </div>
 
       <div id="header_name" style="color: #<?php echo $me['colour']; ?>">
@@ -46,7 +46,7 @@ if($settings_stmt->rowCount()==1) {
 
 
     if($_FILES["profilepic"]["error"] == 0){
-      $target_dir = "../img/";
+      $target_dir = "../img/upload/";
       $target_file = $target_dir . "preview.jpg";
 
       $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
@@ -66,7 +66,7 @@ if($settings_stmt->rowCount()==1) {
       }
     }
     if($_FILES["headerpic"]["error"] == 0){
-      $header_target_dir = "../img/";
+      $header_target_dir = "../img/upload/";
       $header_target_file = $header_target_dir . "preview_header.png";
 
       $header_imageFileType = pathinfo($header_target_file, PATHINFO_EXTENSION);
@@ -88,9 +88,9 @@ if($settings_stmt->rowCount()==1) {
 
 
     ?>
-    <header style="border-bottom: #<?php echo $me['colour']; ?> solid 2px; background-image: url('<?php if($_FILES["headerpic"]["error"] == 0){ echo $header_target_file; } else { echo "../img/bg_header.png"; } ?>');">
+    <header style="border-bottom: #<?php echo $me['colour']; ?> solid 2px; background-image: url('<?php if($_FILES["headerpic"]["error"] == 0){ echo $header_target_file; } else { echo "../img/upload/bg_header.png"; } ?>');">
       <div id="header_image">
-        <a href="index.php"><img src="<?php if($_FILES["profilepic"]["error"] == 0){ echo $target_file; } else { echo "../img/me.jpg"; } ?>" alt="<?php echo $me['forename'] . ' ' . $me['surname']; ?>"></a>
+        <a href="index.php"><img src="<?php if($_FILES["profilepic"]["error"] == 0){ echo $target_file; } else { echo "../img/upload/me.jpg"; } ?>" alt="<?php echo $me['forename'] . ' ' . $me['surname']; ?>"></a>
       </div>
 
       <div id="header_name" style="color: #<?php echo $me['colour']; ?>">
