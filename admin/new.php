@@ -1,6 +1,9 @@
 <?php
-
+  //Connect to database and start session
   include_once('../common/base.php');
+
+  //All database queries
+
 
   function showForm($colour, $title = '', $summary = '', $content = '', $image = '') {?>
     <form id="updateProject" method="POST">
@@ -34,7 +37,7 @@
     <link type="text/css" rel="stylesheet" href="../css/style.css"  media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="admin.css"  media="screen,projection"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <title>Admin - Phil Wilkinson</title>
+    <title>Admin - <?php echo $me['forename'] . " " . $me['surname']; ?></title>
   </head>
   <body>
     <?php
@@ -45,7 +48,7 @@
     <div id="content">
 
       <?php if(isset($_SESSION['loggedin'])) {
-        //ADMIN IS LOGGED IN
+        //Admin is logged in
 
         if(isset($_POST['action']) && $_POST['action'] == "previewPost") {
 

@@ -1,7 +1,8 @@
 <?php
-
+  //Connect to database and start session
   include_once('common/base.php');
 
+  //Do all database queries here
   if(isset($_GET['id'])){
     $sql = "SELECT * FROM projects WHERE id=:id";
     try {
@@ -13,8 +14,8 @@
       echo 'No such post: ID' . $_GET['id'];
     }
   }
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -22,7 +23,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link type="text/css" rel="stylesheet" href="css/style.css"  media="screen,projection"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <title><?php echo $result['title']; ?> // Phil Wilkinson</title>
+    <title><?php echo $result['title']; ?> // <?php echo $me['forename'] . " " . $me['surname']; ?></title>
   </head>
   <body>
     <?php include_once('common/header.php'); ?>

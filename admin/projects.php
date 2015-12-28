@@ -1,6 +1,59 @@
 <?php
-
+  //Connect to database and start session
   include_once('../common/base.php');
+
+  //All database queries
+  if(isset($_SESSION['loggedin'])) {
+    if(isset($_POST['action'])){
+      if($_POST['action'] == "deleteProject") {
+        $sql = "DELETE FROM projects WHERE id=:id";
+
+        try {
+          $stmt = $db->prepare($sql);
+          $stmt->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
+          $stmt->execute();
+        } catch (PDOException $e) {
+          $notices .= "<div class='adminnotice'><span class='notice'>Deletion failed: " . $e->getMessage() . "</span></div>";
+        }
+
+        if($stmt->rowCount()==1) {
+          $notices .= "<div class='adminnotice'><span class='notice'>Post successfully deleted. Redirecting...</span></div>";
+          ?><meta http-equiv="refresh" content="0"><?php
+        } else {
+          $notices .= "<div class='adminnotice'><span class='notice'>Could not find project to be deleted.</span></div>";
+        }
+      }
+
+      if($_POST['action'] == "toggleHide") {
+        $sql = "UPDATE projects SET visible=:visible WHERE id=:id";
+
+        $toggleTo = ($_POST['visible']) ? 0 : 1;
+
+        try {
+          $stmt = $db->prepare($sql);
+          $stmt->bindParam(':visible', $toggleTo, PDO::PARAM_STR);
+          $stmt->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
+          $stmt->execute();
+        } catch (PDOException $e) {
+          $notices .= "<div class='adminnotice'><span class='notice'>Could not toggle visibility: " . $e->getMessage() . "</span></div>";
+        }
+      }
+
+      if($_POST['action'] == "previewPostChanges") {
+
+      }
+
+      if($_POST['action'] == "saveChanges") {
+
+      }
+    }
+
+    if(isset($_GET['id'])){
+
+    } else {
+
+    }
+  }
 
   function showForm($colour, $title, $summary, $content, $image) {?>
     <form id="updateProject" method="POST">
@@ -34,7 +87,7 @@
     <link type="text/css" rel="stylesheet" href="../css/style.css"  media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="admin.css"  media="screen,projection"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <title>Admin - Phil Wilkinson</title>
+    <title>Admin - <?php echo $me['forename'] . " " . $me['surname']; ?></title>
   </head>
   <body>
     <?php
@@ -44,36 +97,12 @@
 
     <div id="content">
 
-
       <?php if(isset($_SESSION['loggedin'])) {
-        //ADMIN IS LOGGED IN
+        //Admin is logged in
+        if(isset($notices)) echo $notices;
 
-        //TODO:
-        //if delete, delete and redirect
-        //if previewPostChanges, preview and show form
-        //if saveChanges, save and redirect
-        //if id set, show form
-        //error no id set
 
         if(isset($_POST['action']) && $_POST['action'] == "deleteProject") {
-
-          $sql = "DELETE FROM projects
-                  WHERE id=:id";
-
-          try {
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam(':id', $_POST['id'], PDO::PARAM_STR);
-            $stmt->execute();
-          } catch (PDOException $e) {
-    		    echo 'Delete failed: ' . $e->getMessage();
-          }
-
-          if($stmt->rowCount()==1) {
-            echo "<div class='adminnotice'><span class='notice'>Post successfully deleted. Redirecting...</span></div>";
-            ?><meta http-equiv="refresh" content="0"><?php
-          } else {
-            echo "<div class='adminnotice'><span class='notice'>Delete Failed.</span></div>";
-          }
 
         }
         elseif (isset($_POST['action']) && $_POST['action'] == "previewPostChanges") { ?>
@@ -169,7 +198,7 @@
             for($i = 0; $i < $stmt->rowCount(); $i++){
 
               $result = $stmt->fetch(PDO::FETCH_ASSOC); ?>
-              <div class="project">
+              <div class="project<?php if(!$result['visible']) echo " hidden"; ?>">
                 <span class="title"><?php echo $result['title']; ?></span>
                 <a style="border: 1px solid #<?php echo $me['colour']; ?>;" class="button" href="?id=<?php echo $result['id']; ?>">Down</a>
                 <a style="border: 1px solid #<?php echo $me['colour']; ?>;" class="button" href="?id=<?php echo $result['id']; ?>">Up</a>
@@ -178,8 +207,12 @@
                   <input type="hidden" name="action" value="deleteProject" />
                   <button style="border: 1px solid #<?php echo $me['colour']; ?>;" >Delete</button>
                 </form>
-                 <!-- <a class="button delete" href="?id=<?php echo $result['id']; ?>">Delete</a>-->
-                <a style="border: 1px solid #<?php echo $me['colour']; ?>;" class="button" href="?id=<?php echo $result['id']; ?>">Hide</a>
+                <form method="POST" class="hideForm">
+                  <input type="hidden" name="id" value="<?php echo $result['id']; ?>" />
+                  <input type="hidden" name="visible" value="<?php echo $result['visible']; ?>" />
+                  <input type="hidden" name="action" value="toggleHide" />
+                  <button style="border: 1px solid #<?php echo $me['colour']; ?>;" ><?php if($result['visible']) echo "Hide"; else echo "Unhide"; ?></button>
+                </form>
                 <a style="border: 1px solid #<?php echo $me['colour']; ?>;" class="button" href="?id=<?php echo $result['id']; ?>">Edit</a>
               </div> <?php
             }
