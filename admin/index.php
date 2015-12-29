@@ -4,31 +4,40 @@
 
   //Login form submitted
   if(isset($_POST['email']) && isset($_POST['password'])) {
-    $checkLogin = "SELECT email, name FROM user WHERE email=:email AND password=:pass LIMIT 1";
+    $checkLogin = "SELECT email, name, password FROM user WHERE email=:email LIMIT 1";
 
     try {
       $loginCheckResult = $db->prepare($checkLogin);
       $loginCheckResult->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
-      $loginCheckResult->bindParam(':pass', $_POST['password'], PDO::PARAM_STR);
       $loginCheckResult->execute();
 
       if($loginCheckResult->rowCount()==1) {
         $admin = $loginCheckResult->fetch(PDO::FETCH_ASSOC);
 
-        $_SESSION['email'] = htmlentities($_POST['email'], ENT_QUOTES);
-        $_SESSION['name'] = $admin['name'];
-        $_SESSION['loggedin'] = 1;
+        $password = $_POST['password'];
 
-        $notices .= "<div class='adminnotice'><span class='success'>Login Successful! Redirecting...</span></div>";
+        echo password_hash("dan611ddd", PASSWORD_BCRYPT);
 
-        if(isset($_GET['redirect'])) {
-          echo "<meta http-equiv='refresh' content='0;URL=" . $_GET['redirect'] . ".php'>";
+        if(password_verify($password, $admin['password'])){
+          //Login Successful
+          $_SESSION['email'] = htmlentities($_POST['email'], ENT_QUOTES);
+          $_SESSION['name'] = $admin['name'];
+          $_SESSION['loggedin'] = 1;
+
+          $notices .= "<div class='adminnotice'><span class='success'>Login Successful! Redirecting...</span></div>";
+
+          if(isset($_GET['redirect'])) {
+            echo "<meta http-equiv='refresh' content='0;URL=" . $_GET['redirect'] . ".php'>";
+          } else {
+            echo "<meta http-equiv='refresh' content='0'>";
+          }
         } else {
-          echo "<meta http-equiv='refresh' content='0'>";
-        } ?>
+          //Incorrect Password
+          $notices .= "<div class='adminnotice'><span class='notice'>Incorrect password.</span></div>";
+        }
 
-      <?php } else {
-        $notices .= "<div class='adminnotice'><span class='notice'>No such user/password.</span></div>";
+      } else {
+        $notices .= "<div class='adminnotice'><span class='notice'>No such user.</span></div>";
       }
     } catch (PDOException $e) {
       echo 'Login failed: ' . $e->getMessage();
@@ -50,13 +59,12 @@
     <?php
     include_once('header.php');
     if(isset($_SESSION['loggedin'])) { include "nav.php"; }
+    if(isset($notices)) echo $notices;
     ?>
 
-    <div id="adminhome">
-
-      <?php if(isset($_SESSION['loggedin'])) {
-        //Admin is logged in
-        if(isset($notices)) echo $notices; ?>
+    <?php if(isset($_SESSION['loggedin'])) {
+      //Admin is logged in ?>
+      <div id="adminhome">
 
         <h1>Hello, <?php echo $_SESSION['name']; ?></h1>
 
@@ -67,9 +75,12 @@
           <li><a href="projects.php">View your projects</a></li>
         </ul>
 
-      <?php } else {
-        //Admin isn't logged in ?>
+      </div>
 
+    <?php } else {
+      //Admin isn't logged in ?>
+
+      <div id="content">
         <form id="login-form" action="index.php" method="POST">
           <div>
             <label for="email">Email</label>
@@ -81,10 +92,10 @@
             <input type="submit" name="login-submit" id="login-submit" value="Log In" class="button" />
           </div>
         </form>
+      </div>
 
-      <?php } ?>
+    <?php } ?>
 
-    </div><!--end content -->
     <div id="console">
       <?php print "<pre>"; print_r($GLOBALS); print "</pre>"; ?>
     </div>

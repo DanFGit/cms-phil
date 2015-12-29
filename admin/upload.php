@@ -18,7 +18,7 @@
         $success = true;
 
         //Check if file is a supported image
-        if(getimagesize($_FILES["imageupload"]["tmp_name"])) {
+        if(!getimagesize($_FILES["imageupload"]["tmp_name"])) {
           $success = false;
           $notices .= "<div class='adminnotice'><span class='notice'>Sorry, you need to upload an image! You uploaded a " . strtoupper($imageFileType) . " file.</span></div>";
         } elseif($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
